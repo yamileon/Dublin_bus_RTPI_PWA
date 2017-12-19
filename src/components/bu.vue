@@ -1,57 +1,50 @@
 <template>
   <q-layout ref="layout" view="lHh Lpr fff" :left-class="{'bg-grey-2': true}">
-	<q-toolbar-title class = "layout-header transition-generic" >
-	  <q-item-main class="red">
-		  <q-item class="float-left" >{{status}}</q-item>
-		  <q-btn class="float-right" color="blue" @click="reset" >clear</q-btn>
-	  </q-item-main>
-    </q-toolbar-title>
+	<div class="fixed-top">
+		<q-toolbar-title class = "layout-header transition-generic top-padding" >
+		<q-item-main class="red">
+			<q-item class="float-left" >{{status}}</q-item>
+			<q-btn class="float-right" color="blue" @click="reset" >clear</q-btn>
+		</q-item-main>
+		</q-toolbar-title>
 
-    <q-list highlight>
+		<q-list highlight>
+			<q-item>
+				<q-item-main>
+					<q-input type="text" max-length="16" v-model="stopname" @keyup.enter="addStop(stopname,stopid)" placeholder="input stop name">
+						<q-btn class="float-right" color="blue" @click="addStop(stopname,stopid)">Add</q-btn>
+					</q-input>
+					<q-input type="number" max-length="16" v-model="stopid" @keyup.enter="checkTimes(stopid)" placeholder="input stop number to search">
+						<q-btn class="float-right" color="blue" @click="checkTimes(stopid)">Search</q-btn>
+					</q-input>
+				</q-item-main>
+			</q-item>
+		</q-list>
+
+		<q-list class="relative-position vertical-middle" highlight>      
+		<q-item v-for="v in savedStops">
+			<q-item-main @click="checkTimes(v.val.tstopid)">{{v.val.tstopname}}
+				<div class="float-right"> {{v.val.tstopid}} </div>
+			</q-item-main>
+		</q-item>
+    	</q-list>
+	</div>
+
+    
+
+	<q-list class="fixed-bottom">
 		<q-item>
 			<q-item-main>
-				<q-input type="text" max-length="16" v-model="stopname" @keyup.enter="addStop(stopname,stopid)" placeholder="input stop name">
-					<q-btn class="float-right" color="blue" @click="addStop(stopname,stopid)">Add</q-btn>
-				</q-input>
-				<q-input type="number" max-length="16" v-model="stopid" @keyup.enter="checkTimes(stopid)" placeholder="input stop number to search">
-					<q-btn class="float-right" color="blue" @click="checkTimes(stopid)">Search</q-btn>
-				</q-input>
-			</q-item-main>
-		</q-item>
-	</q-list>
-
-    <q-list highlight>
-
-		<!-- <q-item @click="checkTimes(4631)">
-			<q-item-main>stop 4631
-				<q-item-tile v-for="v in routes">
-					<li> {{v.route}} </li>
-					<li class="float-right"> {{v.due}} </li>
-				</q-item-tile>
-				<q-item-separator />
-			</q-item-main>
-		</q-item> -->
-	
-		<!-- <q-item-separator /> -->
-      
-		<q-item v-for="v in savedStops">
-
-			<q-item-main @click="checkTimes(v.val.tstopname)">{{v.val.tstopname}}
-				
-				<q-item-tile class="float-right">
-					{{v.val.tstopid}}
-
+				<q-item-side>
 					<q-item-tile v-for="v in routes">
-					<li> {{v.route}} </li>
-					<li class="float-right"> {{v.due}} </li>
+						<q-item-separator />
+					<div class="black"> {{v.route}} 
+					<div class="float-right black"> {{v.due}} </div>
+					</div>
 					</q-item-tile>
-
-				</q-item-tile>
-
+				</q-item-side>
 			</q-item-main>
-
 		</q-item>
-    
 	</q-list>
 
   </q-layout>
@@ -93,7 +86,7 @@ export default {
   data() {
     return {
       status: "Stops",
-      routes: ['route','3'],
+      routes: ["route", "3"],
       stopid: "",
       stopname: "",
       savedStops: []
@@ -126,12 +119,14 @@ export default {
     checkTimes(num) {
       this.routes = [];
       this.status = "Stops";
+
       this.$http
         .get(
           "https://data.dublinked.ie/cgi-bin/rtpi/realtimebusinformation?stopid=" +
             num
         )
         .then(response => {
+          console.log(response);
           var res = response.body;
           if (res.errorcode == 1) {
             console.log("error");
@@ -174,7 +169,15 @@ export default {
 	transform-style: preserve-3d;
 }
 
+.top-padding{
+	padding-top:10px;
+}
+
 .red {
 	color: red;
+}
+
+.black{
+	color:black;
 }
 </style>
