@@ -86,7 +86,7 @@ export default {
   data() {
     return {
       status: "Stops",
-      routes: ["route", "3"],
+      routes: [],
       stopid: "",
       stopname: "",
       savedStops: []
@@ -144,10 +144,24 @@ export default {
         });
     },
     addStop(tstopname, tstopid) {
-      LocalStorage.set(tstopid, {
-        tstopname,
-        tstopid
-      });
+      if (tstopname != "") {
+        LocalStorage.set(tstopid, {
+          tstopname,
+          tstopid
+        });
+      }
+
+      this.savedStops = [];
+      var it = LocalStorage.get.all();
+      for (var key in it) {
+        if (it.hasOwnProperty(key)) {
+          var val = it[key];
+          // console.log(val);
+          this.savedStops.push({
+            val
+          });
+        }
+      }
     }
   }
 };
@@ -169,15 +183,15 @@ export default {
 	transform-style: preserve-3d;
 }
 
-.top-padding{
-	padding-top:10px;
+.top-padding {
+	padding-top: 10px;
 }
 
 .red {
 	color: red;
 }
 
-.black{
-	color:black;
+.black {
+	color: black;
 }
 </style>
