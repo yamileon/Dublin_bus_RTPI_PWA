@@ -1,0 +1,34 @@
+{
+  "name": "dubvue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "onsenui": "^2.10.6",
+    "register-service-worker": "^1.5.2",
+    "request": "^2.88.0",
+    "vue": "^2.5.21",
+    "vue-onsenui": "^2.6.2",
+    "vue-resource": "^1.5.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-pwa": "^3.3.0",
+    "@vue/cli-service": "^3.3.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
